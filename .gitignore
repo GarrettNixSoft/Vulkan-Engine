@@ -1,0 +1,6 @@
+.vscode/
+build/
+external/
+.env.cmake
+CMakeLists.txt
+mingwBuild.bat

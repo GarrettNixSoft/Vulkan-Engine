@@ -11,9 +11,8 @@ namespace fve {
 	do                                                              \
 	{                                                               \
 		VkResult err = x;                                           \
-		if (err)                                                    \
-		{                                                           \
-			std::cout <<"Detected Vulkan error: " << err << std::endl; \
+		if (err) {                                                  \
+			fve::FveLogger::getCoreLogger()->error("Detected Vulkan error: {0}", err); \
 			abort();                                                \
 		}                                                           \
 	} while (0)

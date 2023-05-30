@@ -7,6 +7,7 @@
 
 #include "fve_buffer.hpp"
 #include "../fve_globals.hpp"
+#include "../../core/utils/fve_logger.hpp"
 
  // std
 #include <cassert>
@@ -63,9 +64,9 @@ namespace fve {
         unmap();
         vmaDestroyBuffer(allocator, buffer.buffer, buffer.allocation);
         BUFFER_ALLOCATIONS--;
-        std::cout << "Destroyed buffer! Active allocations: " << BUFFER_ALLOCATIONS << std::endl;
+        FVE_CORE_TRACE("Destroyed buffer! Active allocations: {0}", BUFFER_ALLOCATIONS);
         // debug
-        if (allocInfo.pUserData) std::cout << "The buffer destroyed had user pointer data: " << (const char*)allocInfo.pUserData << std::endl;
+        if (allocInfo.pUserData) FVE_CORE_TRACE("The buffer destroyed had user pointer data: {0}", (const char*)allocInfo.pUserData);
     }
 
     /**

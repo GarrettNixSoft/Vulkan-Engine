@@ -1,5 +1,6 @@
 #include "fve_renderer.hpp"
 #include "../core/vulkan/fve_memory.hpp"
+#include "../core/utils/fve_logger.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -14,7 +15,7 @@ namespace fve {
 	}
 
 	FveRenderer::~FveRenderer() {
-		std::cout << "Destroying renderer" << std::endl;
+		FVE_CORE_TRACE("Destroying renderer");
 		freeCommandBuffers();
 	}
 

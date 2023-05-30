@@ -7,6 +7,7 @@
 #include "core/vulkan/fve_descriptors.hpp"
 
 #include <vma/vk_mem_alloc.h>
+#include <spdlog/spdlog.h>
 
 #include <memory>
 #include <vector>
@@ -22,6 +23,8 @@ namespace fve {
 		void init();
 		void run();
 	private:
+	
+	
 		FveWindow& window;
 		FveDevice& device;
 		FveRenderer renderer{window, device};

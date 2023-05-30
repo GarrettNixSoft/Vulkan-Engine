@@ -1,6 +1,7 @@
 #include "fve_pipeline.hpp"
 #include "../../assets/fve_model.hpp"
 #include "../../assets/fve_assets.hpp"
+#include "../../core/utils/fve_logger.hpp"
 
 #include <fstream>
 #include <stdexcept>
@@ -57,8 +58,8 @@ namespace fve {
 		auto vertCode = readFile(vertFilePath);
 		auto fragCode = readFile(fragFilePath);
 
-		//std::cout << "Vertex Shader Code Size:   " << vertCode.size() << std::endl;
-		//std::cout << "Fragment Shader Code Size: " << fragCode.size() << std::endl;
+		FVE_CORE_DEBUG("Vertex Shader Code Size:   {0} bytes", vertCode.size());
+		FVE_CORE_DEBUG("Fragment Shader Code Size: {0} bytes", fragCode.size());
 
 		createShaderModule(vertCode, &vertShaderModule);
 		createShaderModule(fragCode, &fragShaderModule);

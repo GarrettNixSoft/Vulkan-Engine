@@ -1,7 +1,8 @@
 #include "fve_assets.hpp"
-#include "../core/fve_utils.hpp"
+#include "../core/utils/fve_utils.hpp"
 #include "../core/fve_initializers.hpp"
 #include "../core/vulkan/fve_buffer.hpp"
+#include "../core/utils/fve_logger.hpp"
 
 #include <stdexcept>
 #include <iostream>
@@ -167,7 +168,7 @@ namespace fve {
 
 			textures.emplace(textureId, texture);
 		}
-		else throw std::runtime_error("Failed to load texture " + filePath);
+		else throw std::runtime_error("Failed to load texture " + enginePath);
 
 	}
 
@@ -223,62 +224,26 @@ namespace fve {
 
 	void FveAssets::cleanUp(FveDevice& device) {
 
-		std::cout << "Destroying meshes" << std::endl;
-
-		// find all allocations
-		//std::vector<VmaAllocation> allocations{};
-
-		//for (auto& kv : meshes) {
-		//	auto& mesh = kv.second;
-		//	vmaDestroyBuffer(fveAllocator, mesh.vertexBuffer->getAllocatedBuffer().buffer, mesh.vertexBuffer->getAllocatedBuffer().allocation);
-		//	if (mesh.hasIndexBuffer) {
-		//		vmaDestroyBuffer(fveAllocator, mesh.indexBuffer->getAllocatedBuffer().buffer, mesh.indexBuffer->getAllocatedBuffer().allocation);
-		//	}
-
-		//	std::cout << "Destroyed mesh: " << kv.first << std::endl;
-
-		//	//vmaFreeMemory(fveAllocator, mesh.indexBuffer->getAllocatedBuffer().allocation);
-
-		//	//allocations.push_back(mesh.vertexBuffer->getAllocatedBuffer().allocation);
-		//}
-
-		std::cout << "Destroying textures" << std::endl;
-
+		FVE_CORE_TRACE("Destroying textures");
 
 		for (auto& kv : textures) {
 			auto& texture = kv.second;
 			vkDestroyImageView(device.device(), texture.imageView, nullptr);
 			vmaDestroyImage(fveAllocator, texture.allocatedImage.image, texture.allocatedImage.allocation);
-			std::cout << "Cleaned up " << kv.first << std::endl;
-
-			//vmaFreeMemory(fveAllocator, texture.allocatedImage.allocation);
-
-			//allocations.push_back(texture.allocatedImage.allocation);
+			FVE_CORE_DEBUG("Cleaned up {0}", kv.first);
 		}
 
-		std::cout << "Destroying samplers" << std::endl;
+
+		FVE_CORE_TRACE("Destroying samplers");
 
 		for (auto& kv : samplers) {
 			auto& sampler = kv.second;
 			vkDestroySampler(device.device(), sampler, nullptr);
+			FVE_CORE_TRACE("Cleaned up {0}", kv.first);
 		}
 
-		// free it all!
-		//for (int i = 0; i < allocations.size(); i++) {
-		//	VmaAllocation allocation = allocations[i];
-		//	try {
-		//		vmaFreeMemory(fveAllocator, allocation);
-		//	}
-		//	catch (...) {
-		//		//
-		//	}
-		//}
-
-		//materials.clear();
+		// dealloc meshes automatically via their destructor
 		meshes.clear();
-		//models.clear();
-		//textures.clear();
-		//samplers.clear();
 
 	}
 

@@ -1,5 +1,6 @@
 #include "fve_swap_chain.hpp"
 #include "fve_memory.hpp"
+#include "../../core/utils/fve_logger.hpp"
 
 // std
 #include <array>
@@ -34,7 +35,7 @@ namespace fve {
 	}
 
 	FveSwapChain::~FveSwapChain() {
-		std::cout << "Destroying swap chain" << std::endl;
+		FVE_CORE_TRACE("Destroying swap chain");
 
 		for (auto imageView : swapChainImageViews) {
 			vkDestroyImageView(device.device(), imageView, nullptr);
@@ -65,7 +66,7 @@ namespace fve {
 			vkDestroyFence(device.device(), inFlightFences[i], nullptr);
 		}
 
-		std::cout << "Swap chain destroyed" << std::endl;
+		FVE_CORE_TRACE("Swap chain destroyed");
 	}
 
 	VkResult FveSwapChain::acquireNextImage(uint32_t* imageIndex) {
@@ -195,8 +196,8 @@ namespace fve {
 
 		swapChainImageFormat = surfaceFormat.format;
 		swapChainExtent = extent;
-
-		std::cout << "Created a new swap chain" << std::endl;
+		
+		FVE_CORE_TRACE("Created a new swap chain");
 	}
 
 	void FveSwapChain::createImageViews() {
@@ -398,19 +399,19 @@ namespace fve {
 		const std::vector<VkPresentModeKHR>& availablePresentModes) {
 		for (const auto& availablePresentMode : availablePresentModes) {
 			if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
-				std::cout << "Present mode: Mailbox" << std::endl;
+				FVE_CORE_DEBUG("Present mode: Mailbox");
 				return availablePresentMode;
 			}
 		}
 
 		// for (const auto &availablePresentMode : availablePresentModes) {
-		//   if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
-		//     std::cout << "Present mode: Immediate" << std::endl;
-		//     return availablePresentMode;
-		//   }
+		// 	if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
+		// 		FVE_CORE_DEBUG("Present mode: Immediate");
+		// 		return availablePresentMode;
+		// 	}
 		// }
 
-		std::cout << "Present mode: V-Sync" << std::endl;
+		FVE_CORE_DEBUG("Present mode: V-Sync");
 		return VK_PRESENT_MODE_FIFO_KHR;
 	}
 

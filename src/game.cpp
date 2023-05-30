@@ -1,5 +1,6 @@
 #include "game.hpp"
 
+#include "core/utils/fve_logger.hpp"
 #include "movement_controller.hpp"
 #include "render/systems/simple_render_system.hpp"
 #include "render/systems/point_light_system.hpp"
@@ -196,7 +197,7 @@ namespace fve {
 		// wait for the GPU to finish whatever it was doing when the user exits the game
 		vkDeviceWaitIdle(device.device());
 
-		std::cout << "Destroying UBO buffers" << std::endl;
+		FVE_CORE_DEBUG("Destroying UBO buffers");
 
 	}
 
@@ -264,36 +265,6 @@ namespace fve {
 		}
 
 		// CREATE SOMETHING WITH A TEXTURE
-		
-
-		//std::cout << "Made a sampler" << std::endl;
-
-		/*if (texturedMat == nullptr) {
-			std::cerr << "couldn't find texturedmaterial" << std::endl;
-			throw std::runtime_error("lost a material");
-		}*/
-
-		//globalPool->allocateDescriptorSet(globalSetLayout->getDescriptorSetLayout(), texturedMat->textureSet);
-
-		/*if (texturedMat->textureSet == VK_NULL_HANDLE) {
-			std::cerr << "why didn't that work" << std::endl;
-		}
-
-		std::cout << "Made a descriptor set" << std::endl;
-
-		Texture* nixon = fveAssets.getTexture("nixon");
-		if (nixon == nullptr) {
-			std::cerr << "nixon was impeached" << std::endl;
-		}
-		else {
-			std::cout << "retrieved nixon" << std::endl;
-		}
-
-		if (texturedMat->textureSet == VK_NULL_HANDLE) {
-			std::cerr << "missing descriptor set" << std::endl;
-		}*/
-
-		//FveDescriptorWriter descriptorWriter(*globalSetLayout.get(), *globalPool.get());
 
 		// TEXTURE THE FLOOR
 		{

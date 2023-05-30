@@ -4,6 +4,7 @@
 #include "core/vulkan/fve_memory.hpp"
 #include "fve_constants.hpp"
 #include "core/fve_globals.hpp"
+#include "core/utils/fve_logger.hpp"
 
 #include <cstdlib>
 #include <iostream>
@@ -11,6 +12,10 @@
 #include <cassert>
 
 void runGame() {
+    
+    fve::FveLogger::init();
+    fve::FVE_CORE_WARN("Initialized logger!");
+    fve::FVE_INFO("Initialized logger!");
 
     fve::FveWindow window{ fve::WIDTH, fve::HEIGHT, "First Vulkan Game" };
     fve::FveDevice device{ window };
@@ -24,6 +29,10 @@ void runGame() {
 
 }
 
+void waitOnExit() {
+    while (std::cin.get() != '\n');
+}
+
 int main() {
 
     try {
@@ -31,12 +40,14 @@ int main() {
     }
     catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
+        waitOnExit();
         return EXIT_FAILURE;
     }
 
     extern int BUFFER_ALLOCATIONS;
-    assert(BUFFER_ALLOCATIONS == 0 && "Buffer alloc/dealloc mismatch!");
-    if (BUFFER_ALLOCATIONS == 0) std::cout << "Buffer alloc/dealloc seems to match" << std::endl;
-
+    if (BUFFER_ALLOCATIONS != 0) fve::FveLogger::getCoreLogger()->error("Buffer alloc/dealloc mismatch!");
+    else fve::FVE_CORE_DEBUG("Buffer alloc/dealloc seems to match");
+    
+    waitOnExit();
     return EXIT_SUCCESS;
 }

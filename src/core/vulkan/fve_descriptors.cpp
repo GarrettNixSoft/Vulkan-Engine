@@ -158,7 +158,6 @@ namespace fve {
 
 	FveDescriptorWriter& FveDescriptorWriter::writeImage(
 		uint32_t binding, VkDescriptorImageInfo* imageInfo) {
-		//std::cout << "binding = " << binding << std::endl;
 		assert(setLayout.bindings.count(binding) == 1 && "Layout does not contain specified binding");
 
 		auto& bindingDescription = setLayout.bindings[binding];

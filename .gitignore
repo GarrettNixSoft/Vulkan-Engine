@@ -4,3 +4,4 @@ external/
 .env.cmake
 CMakeLists.txt
 mingwBuild.bat
+mingwBuildRun.bat

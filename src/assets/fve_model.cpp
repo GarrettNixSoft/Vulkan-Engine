@@ -1,5 +1,6 @@
 #include "fve_model.hpp"
-#include "../core/fve_utils.hpp"
+#include "../core/utils/fve_utils.hpp"
+#include "../core/utils/fve_logger.hpp"
 #include "../core/vulkan/fve_memory.hpp"
 #include "fve_assets.hpp"
 
@@ -43,7 +44,8 @@ namespace fve {
 
 		Mesh::Builder meshBuilder;
 		meshBuilder.loadMesh(filepath);
-		std::cout << "Loaded mesh: " << filepath << " -- " << "Vertex count: " << meshBuilder.vertices.size() << std::endl;
+
+		FVE_CORE_DEBUG("Loaded mesh: {0} -- Vertex count: {1}", filepath, meshBuilder.vertices.size());
 		return Mesh(device, meshBuilder.vertices, meshBuilder.indices);
 
 	}

@@ -2,6 +2,7 @@
 #include "../fve_types.hpp"
 #include "fve_memory.hpp"
 #include "../fve_globals.hpp"
+#include "../../core/utils/fve_logger.hpp"
 
 #include <vma/vk_mem_alloc.h>
 
@@ -63,7 +64,7 @@ namespace fve {
 	}
 
 	FveDevice::~FveDevice() {
-		std::cout << "Destroying device" << std::endl;
+		FVE_CORE_TRACE("Destroying device");
 
 		vkDestroyCommandPool(device_, commandPool, nullptr);
 		vkDestroyDevice(device_, nullptr);
@@ -74,8 +75,8 @@ namespace fve {
 
 		vkDestroySurfaceKHR(instance_, surface_, nullptr);
 		vkDestroyInstance(instance_, nullptr);
-
-		std::cout << "Device destroyed" << std::endl;
+		
+		FVE_CORE_TRACE("Device destroyed");
 	}
 
 	void FveDevice::createInstance() {
@@ -125,7 +126,7 @@ namespace fve {
 		if (deviceCount == 0) {
 			throw std::runtime_error("failed to find GPUs with Vulkan support!");
 		}
-		std::cout << "Device count: " << deviceCount << std::endl;
+		FVE_CORE_DEBUG("Device count: {0}", deviceCount);
 		std::vector<VkPhysicalDevice> devices(deviceCount);
 		vkEnumeratePhysicalDevices(instance_, &deviceCount, devices.data());
 
@@ -141,7 +142,7 @@ namespace fve {
 		}
 
 		vkGetPhysicalDeviceProperties(physicalDevice_, &properties);
-		std::cout << "physical device: " << properties.deviceName << std::endl;
+		FVE_CORE_DEBUG("physical device: {0}", properties.deviceName);
 	}
 
 	void FveDevice::createLogicalDevice() {
@@ -291,17 +292,17 @@ namespace fve {
 		std::vector<VkExtensionProperties> extensions(extensionCount);
 		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-		std::cout << "available extensions:" << std::endl;
+		FVE_CORE_DEBUG("Available extensions: {0}", extensionCount);
 		std::unordered_set<std::string> available;
 		for (const auto& extension : extensions) {
-			std::cout << "\t" << extension.extensionName << std::endl;
+			FVE_CORE_TRACE("\t{0}", extension.extensionName);
 			available.insert(extension.extensionName);
 		}
 
-		std::cout << "required extensions:" << std::endl;
 		auto requiredExtensions = getRequiredExtensions();
+		FVE_CORE_DEBUG("Required extensions: {0}", requiredExtensions.size());
 		for (const auto& required : requiredExtensions) {
-			std::cout << "\t" << required << std::endl;
+			FVE_CORE_TRACE("\t{0}", required);
 			if (available.find(required) == available.end()) {
 				throw std::runtime_error("Missing required glfw extension");
 			}
@@ -433,7 +434,7 @@ namespace fve {
 		VK_CHECK(vmaCreateBuffer(fveAllocator, &bufferInfo, &vmaAllocInfo, &buffer, &allocation, nullptr));
 
 		BUFFER_ALLOCATIONS++;
-		std::cout << "New buffer! Active allocations: " << BUFFER_ALLOCATIONS << std::endl;
+		FVE_CORE_TRACE("New buffer! Active allocations: {0}", BUFFER_ALLOCATIONS);
 		
 	}
 

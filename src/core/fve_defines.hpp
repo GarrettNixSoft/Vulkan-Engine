@@ -14,7 +14,6 @@ typedef float f32;
 typedef double f64;
 
 typedef int b32;
-typedef char b8;
 
 #if defined(__clang__) || defined(__gcc__)
 #define STATIC_ASSERT _Static_assert

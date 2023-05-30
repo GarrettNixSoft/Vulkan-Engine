@@ -2,6 +2,7 @@
 #include "fve_assets.hpp"
 #include "../core/vulkan/fve_device.hpp"
 #include "../core/fve_initializers.hpp"
+#include "../core/utils/fve_logger.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -16,14 +17,14 @@ const bool debugMode = true;
 
 namespace fve {
 
-	bool loadImageFromFile(FveDevice& device, const char* filePath, AllocatedImage& outImage) {
+	bool loadImageFromFile(FveDevice& device, const char* filepath, AllocatedImage& outImage) {
 
 		int width, height, channels;
 
-		stbi_uc* pixels = stbi_load(filePath, &width, &height, &channels, STBI_rgb_alpha);
+		stbi_uc* pixels = stbi_load(filepath, &width, &height, &channels, STBI_rgb_alpha);
 
 		if (!pixels) {
-			if (debugMode) std::cerr << "Failed to load texture: " << filePath << std::endl;
+			if (debugMode) std::cerr << "Failed to load texture: " << filepath << std::endl;
 			return false;
 		}
 
@@ -129,7 +130,7 @@ namespace fve {
 
 		// confirm load success
 		//if (debugMode)
-			std::cout << "Loaded texture " << filePath << std::endl;
+		FVE_CORE_DEBUG("Loaded texture {0}", filepath);
 
 		// assign the out image and return
 		outImage = newImage;
